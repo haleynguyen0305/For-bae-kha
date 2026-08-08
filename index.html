@@ -197,7 +197,7 @@ input {
   <source src="voice.m4a" type="audio/mp4">
 </audio>
 
-<audio id="music" preload="auto" loop>
+<audio id="music" preload="auto">
   <source src="music.m4a" type="audio/mp4">
 </audio>
 
@@ -280,9 +280,7 @@ input {
 
     <div id="letter" class="letter">
 
-      <p>
-        Gửi chị ạ,
-      </p>
+      <p>Gửi chị ạ,</p>
 
       <p>
         Em mong rằng tuổi mới của chị sẽ luôn có thật nhiều niềm vui, thật nhiều hạnh phúc, luôn bình an và đạt được tất cả những điều mà chị đang mong muốn nha.
@@ -329,6 +327,7 @@ const introStatus = document.getElementById("introStatus");
 
 let started = false;
 let revealed = false;
+let loopingMusic = false;
 
 
 function showScreen(id) {
@@ -347,8 +346,6 @@ function showScreen(id) {
 }
 
 
-/* BẤM NÚT ĐẦU */
-
 async function startSurprise() {
 
   if (started) return;
@@ -363,11 +360,6 @@ async function startSurprise() {
 
   try {
 
-    /*
-    MỞ KHÓA FILE NHẠC NGAY TRONG CÚ BẤM ĐẦU
-    ĐỂ TRÌNH DUYỆT KHÔNG CHẶN SAU NÀY
-    */
-
     music.volume = 0;
     music.currentTime = 0;
 
@@ -375,10 +367,6 @@ async function startSurprise() {
 
     music.pause();
     music.currentTime = 0;
-
-    /*
-    SAU ĐÓ MỚI PHÁT VOICE
-    */
 
     voice.currentTime = 0;
 
@@ -401,11 +389,6 @@ async function startSurprise() {
 }
 
 
-/*
-VOICE KẾT THÚC HẲN
-THÌ NHẠC MỚI BẮT ĐẦU
-*/
-
 voice.addEventListener("ended", async () => {
 
   showScreen("loadingScreen");
@@ -427,10 +410,6 @@ voice.addEventListener("ended", async () => {
 
   }
 
-  /*
-  2 GIÂY SAU CHUYỂN SANG MẬT KHẨU
-  */
-
   setTimeout(() => {
 
     showScreen("passwordScreen");
@@ -439,8 +418,6 @@ voice.addEventListener("ended", async () => {
 
 });
 
-
-/* NHẠC TO DẦN */
 
 function fadeInMusic(duration, targetVolume) {
 
@@ -465,7 +442,75 @@ function fadeInMusic(duration, targetVolume) {
 }
 
 
-/* MỞ THƯ */
+/*
+LẶP NHẠC MƯỢT:
+GẦN HẾT BÀI -> NHỎ DẦN
+-> QUAY VỀ ĐẦU
+-> TO DẦN LẠI
+*/
+
+music.addEventListener("timeupdate", () => {
+
+  if (
+    music.duration &&
+    music.currentTime >= music.duration - 1.5 &&
+    !loopingMusic
+  ) {
+
+    loopingMusic = true;
+
+    const fadeSteps = 20;
+    const startVolume = music.volume;
+
+    let step = 0;
+
+    const fadeOut = setInterval(() => {
+
+      step++;
+
+      music.volume = Math.max(
+        0,
+        startVolume * (1 - step / fadeSteps)
+      );
+
+      if (step >= fadeSteps) {
+
+        clearInterval(fadeOut);
+
+        music.pause();
+        music.currentTime = 0;
+        music.volume = 0;
+
+        music.play();
+
+        let fadeStep = 0;
+
+        const fadeIn = setInterval(() => {
+
+          fadeStep++;
+
+          music.volume = Math.min(
+            0.75,
+            0.75 * (fadeStep / fadeSteps)
+          );
+
+          if (fadeStep >= fadeSteps) {
+
+            clearInterval(fadeIn);
+
+            loopingMusic = false;
+          }
+
+        }, 50);
+
+      }
+
+    }, 50);
+
+  }
+
+});
+
 
 function openLetter() {
 
@@ -502,8 +547,6 @@ function openLetter() {
 }
 
 
-/* HIỆN TỪNG ĐOẠN THƯ */
-
 function revealLetter() {
 
   const paragraphs = [
@@ -530,8 +573,6 @@ function revealLetter() {
   }, paragraphs.length * 1050 + 500);
 }
 
-
-/* TIM RƠI */
 
 function createHearts(count) {
 
@@ -568,8 +609,6 @@ function createHearts(count) {
   }
 }
 
-
-/* BẤM ENTER ĐỂ MỞ THƯ */
 
 document
   .getElementById("passwordInput")
