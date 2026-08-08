@@ -1,381 +1,711 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Một lá thư dành riêng cho chị ❤️</title>
-  <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #fff;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(255, 79, 145, .20), transparent 32%),
-        radial-gradient(circle at 85% 10%, rgba(171, 82, 255, .16), transparent 28%),
-        linear-gradient(180deg, #160b14 0%, #0d0810 55%, #070707 100%);
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Một lá thư dành riêng cho chị ❤️</title>
 
-    .screen {
-      display: none;
-      min-height: 100vh;
-      padding: 24px 18px;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity .55s ease;
-    }
-    .screen.active {
-      display: flex;
-      opacity: 1;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    .card {
-      width: 100%;
-      max-width: 720px;
-      padding: 38px 24px;
-      border-radius: 28px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 24px 70px rgba(0,0,0,.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,80,145,.18), transparent 30%),
+    linear-gradient(180deg,#180c16,#0d0810 55%,#070707);
+  overflow-x: hidden;
+}
 
-    h1 {
-      margin: 0 0 18px;
-      font-size: clamp(30px, 7vw, 52px);
-      line-height: 1.25;
-    }
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 24px 18px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
-    .subtitle {
-      margin: 0 0 30px;
-      font-size: 19px;
-      line-height: 1.7;
-      opacity: .9;
-    }
+.screen.active {
+  display: flex;
+}
 
-    .emoji {
-      font-size: 48px;
-      margin-bottom: 16px;
-      animation: float 2.2s ease-in-out infinite;
-    }
+.card {
+  width: 100%;
+  max-width: 720px;
+  padding: 38px 24px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 24px 70px rgba(0,0,0,.42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 
-    button {
-      border: 0;
-      border-radius: 18px;
-      padding: 16px 24px;
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      background: linear-gradient(135deg, #ff4f91, #ff758c);
-      box-shadow: 0 10px 30px rgba(255,79,145,.32);
-      cursor: pointer;
-      transition: transform .18s ease, opacity .18s ease;
-    }
-    button:active { transform: scale(.96); }
-    button:disabled { opacity: .7; }
+h1 {
+  margin: 0 0 18px;
+  font-size: clamp(30px,7vw,52px);
+  line-height: 1.25;
+}
 
-    .main-button { animation: heartbeat 1.45s infinite; }
+.subtitle {
+  margin: 0 0 28px;
+  font-size: 19px;
+  line-height: 1.7;
+  opacity: .9;
+}
 
-    .status {
-      min-height: 28px;
-      margin-top: 18px;
-      font-size: 16px;
-      opacity: .82;
-    }
+.emoji {
+  font-size: 50px;
+  margin-bottom: 16px;
+  animation: float 2.2s ease-in-out infinite;
+}
 
-    input {
-      width: 100%;
-      max-width: 480px;
-      padding: 17px 18px;
-      margin: 10px 0 20px;
-      border: 0;
-      border-radius: 16px;
-      outline: 0;
-      font-size: 20px;
-      text-align: center;
-      background: rgba(255,255,255,.96);
-      color: #222;
-    }
+button {
+  border: 0;
+  border-radius: 18px;
+  padding: 16px 24px;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg,#ff4f91,#ff758c);
+  box-shadow: 0 12px 30px rgba(255,79,145,.32);
+  cursor: pointer;
+}
 
-    .error {
-      min-height: 26px;
-      margin-top: 15px;
-      color: #ffacc8;
-      font-size: 16px;
-    }
+button:active {
+  transform: scale(.96);
+}
 
-    .letter-card {
-      text-align: left;
-      padding: 34px 24px;
-    }
+button:disabled {
+  opacity: .7;
+}
 
-    .letter-title { text-align: center; }
+.main-button {
+  animation: heartbeat 1.45s infinite;
+}
 
-    .letter p {
-      margin: 0 0 20px;
-      font-size: 18px;
-      line-height: 1.95;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity .8s ease, transform .8s ease;
-    }
+.status {
+  min-height: 26px;
+  margin-top: 18px;
+  font-size: 16px;
+  opacity: .82;
+}
 
-    .letter p.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+input {
+  width: 100%;
+  max-width: 480px;
+  margin: 10px 0 20px;
+  padding: 17px;
+  border: 0;
+  border-radius: 16px;
+  font-size: 20px;
+  text-align: center;
+  outline: none;
+}
 
-    .signature {
-      margin-top: 34px;
-      text-align: right;
-      font-size: 19px;
-      font-weight: 700;
-      color: #ff9cba;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-    .signature.show { opacity: 1; }
+.error {
+  min-height: 26px;
+  margin-top: 15px;
+  color: #ffacc8;
+}
 
-    .loading-dots::after {
-      content: "";
-      animation: dots 1.4s steps(4,end) infinite;
-    }
+.letter-card {
+  text-align: left;
+}
 
-    .heart {
-      position: fixed;
-      top: -50px;
-      z-index: 1;
-      pointer-events: none;
-      animation: fall linear forwards;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,.18));
-    }
+.letter-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-    @keyframes heartbeat {
-      0%,100% { transform: scale(1); }
-      50% { transform: scale(1.055); }
-    }
+.letter p {
+  margin: 0 0 20px;
+  font-size: 18px;
+  line-height: 1.95;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .9s ease, transform .9s ease;
+}
 
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-9px); }
-    }
+.letter p.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    @keyframes fall {
-      to {
-        transform: translateY(115vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
+.signature {
+  margin-top: 36px;
+  text-align: right;
+  font-weight: 700;
+  font-size: 19px;
+  color: #ff9cba;
+  opacity: 0;
+  transition: opacity 1s;
+}
 
-    @keyframes dots {
-      0% { content: ""; }
-      25% { content: "."; }
-      50% { content: ".."; }
-      75% { content: "..."; }
-      100% { content: ""; }
-    }
-  </style>
+.signature.show {
+  opacity: 1;
+}
+
+.heart {
+  position: fixed;
+  top: -55px;
+  z-index: 1;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+.loading-dots::after {
+  content: "";
+  animation: dots 1.35s steps(4,end) infinite;
+}
+
+@keyframes heartbeat {
+  50% { transform: scale(1.055); }
+}
+
+@keyframes float {
+  50% { transform: translateY(-9px); }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(115vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes dots {
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- ĐỔI TÊN FILE ĐÚNG NHƯ 2 DÒNG NÀY -->
-  <audio id="voice" preload="auto">
-    <source src="voice.m4a" type="audio/mp4">
-  </audio>
+<!--
+QUAN TRỌNG:
+voice.m4a = bản ghi giọng của bạn, trong đó đã có nhạc nền nhẹ.
+music.m4a = bài nhạc chính.
 
-  <audio id="music" preload="auto" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+Bài music.m4a CHỈ phát sau khi voice.m4a kết thúc hoàn toàn.
+-->
 
-  <section id="introScreen" class="screen active">
-    <div class="card">
-      <div class="emoji">💌</div>
-      <h1>Dành riêng cho bì iu ❤️</h1>
-      <p class="subtitle">Có một điều nhỏ em muốn dành cho chị...</p>
+<audio id="voice" preload="auto">
+  <source src="voice.m4a" type="audio/mp4">
+</audio>
 
-      <button id="startBtn" class="main-button" onclick="startSurprise()">
-        Bấm vô cái này i bì 💗
-      </button>
+<audio id="music" preload="auto" loop>
+  <source src="music.m4a" type="audio/mp4">
+</audio>
 
-      <div id="introStatus" class="status"></div>
-    </div>
-  </section>
 
-  <section id="loadingScreen" class="screen">
-    <div class="card">
-      <div class="emoji">✨</div>
-      <h1>Đang mở món quà<span class="loading-dots"></span></h1>
-      <p class="subtitle">Chờ em một xíu nha ❤️</p>
-    </div>
-  </section>
+<!-- TRANG ĐẦU -->
 
-  <section id="passwordScreen" class="screen">
-    <div class="card">
-      <div class="emoji">💌</div>
-      <h1>Có một lá thư dành riêng cho chị...</h1>
-      <p class="subtitle">Nhập mật khẩu nha ❤️</p>
+<section id="introScreen" class="screen active">
 
-      <input
-        id="passwordInput"
-        type="password"
-        inputmode="numeric"
-        placeholder="Nhập mật khẩu"
-      />
+<div class="card">
 
-      <button onclick="openLetter()">Mở thư</button>
-      <div id="errorMessage" class="error"></div>
-    </div>
-  </section>
+<div class="emoji">💌</div>
 
-  <section id="letterScreen" class="screen">
-    <div class="card letter-card">
-      <h1 class="letter-title">Chúc mừng sinh nhật người em thương ❤️</h1>
+<h1>Dành riêng cho bì iu ❤️</h1>
 
-      <div id="letter" class="letter">
-        <p>Gửi chị ạ,</p>
+<p class="subtitle">
+Có một điều nhỏ em muốn dành cho chị...
+</p>
 
-        <p>Em mong rằng tuổi mới của chị sẽ luôn có thật nhiều niềm vui, thật nhiều hạnh phúc, luôn bình an và đạt được tất cả những điều mà chị đang mong muốn nha.</p>
+<button
+id="startBtn"
+class="main-button"
+onclick="startSurprise()">
 
-        <p>Em biết tụi mình đôi khi vẫn chưa thật sự hiểu hết suy nghĩ của nhau💬. Có những lúc mình bất đồng, có những cuộc tranh cãi xảy ra khiến cả hai buồn lòng. Nhưng sau tất cả, em vẫn muốn ở lại bên chị. Em muốn học cách kiên nhẫn hơn, học cách lắng nghe chị nhiều hơn, học cách quan tâm và để ý đến những điều nhỏ bé xung quanh chị nhiều hơn. Vì lỡ mất chị rồi biết kiếm đâu ra ai thương em nhiều như chị đây 🥺</p>
+Bấm vô cái này i bì 💗
 
-        <p>Cảm ơn chị rất nhiều vì đã luôn ở đây và vẫn ở đây cạnh em. Cảm ơn chị vì từ những ngày đầu tiên đến bây giờ, chị vẫn luôn kiên nhẫn, dịu dàng và yêu thương em theo cách của chị. Có thể đôi lúc em chưa làm tốt, chưa thể hiện hết được tình cảm của mình, nhưng em thật sự rất trân trọng chị và những điều chị dành cho em.</p>
+</button>
 
-        <p>Em mong rằng tụi mình sẽ còn ở bên nhau thật lâu lâu, cùng nhau trải qua thêm thật nhiều kỷ niệm đẹp. Mong rằng sau này mình sẽ có nhiều chuyến đi cùng nhau, cùng khám phá những nơi mới, cùng đu idol, cùng nói xàm với nhau mỗi ngày.</p>
+<div id="introStatus" class="status"></div>
 
-        <p>Chúc mừng sinh nhật bì iu của em 🎂❤️</p>
+</div>
+</section>
 
-        <p>Em thương chị rất nhiều.</p>
-      </div>
 
-      <div id="signature" class="signature">— Bé của chị ❤️</div>
-    </div>
-  </section>
+<!-- ĐANG MỞ QUÀ -->
 
-  <script>
-    const PASSWORD = "0305";
-    const voice = document.getElementById("voice");
-    const music = document.getElementById("music");
-    const startBtn = document.getElementById("startBtn");
-    const introStatus = document.getElementById("introStatus");
+<section id="loadingScreen" class="screen">
 
-    let started = false;
+<div class="card">
 
-    function showScreen(id) {
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      const target = document.getElementById(id);
-      target.classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+<div class="emoji">✨</div>
 
-    async function startSurprise() {
-      if (started) return;
-      started = true;
+<h1>
+Đang mở món quà<span class="loading-dots"></span>
+</h1>
 
-      startBtn.disabled = true;
-      startBtn.textContent = "🎙️ Đang phát...";
-      introStatus.textContent = "Nghe hết nha bì ❤️";
+<p class="subtitle">
+Chờ em một xíu nha ❤️
+</p>
 
-      createHearts(18);
+</div>
+</section>
 
-      try {
-        voice.currentTime = 0;
-        await voice.play();
-      } catch (e) {
-        introStatus.textContent = "Không mở được voice. Kiểm tra file voice.m4a nha 🥺";
-        startBtn.disabled = false;
-        startBtn.textContent = "Bấm vô cái này i bì 💗";
-        started = false;
-      }
-    }
 
-    voice.addEventListener("ended", async () => {
-      // Voice xong -> nhạc bắt đầu fade in
-      music.volume = 0;
-      try {
-        await music.play();
-        fadeInMusic(3000);
-      } catch (e) {
-        console.log("Không phát được music.mp3");
-      }
+<!-- MẬT KHẨU -->
 
-      showScreen("loadingScreen");
-      createHearts(22);
+<section id="passwordScreen" class="screen">
 
-      setTimeout(() => {
-        showScreen("passwordScreen");
-        setTimeout(() => document.getElementById("passwordInput").focus(), 300);
-      }, 2000);
-    });
+<div class="card">
 
-    function fadeInMusic(duration) {
-      const steps = 30;
-      const interval = duration / steps;
-      let step = 0;
+<div class="emoji">💌</div>
 
-      const timer = setInterval(() => {
-        step++;
-        music.volume = Math.min(1, step / steps);
-        if (step >= steps) clearInterval(timer);
-      }, interval);
-    }
+<h1>
+Có một lá thư dành riêng cho chị...
+</h1>
 
-    function openLetter() {
-      const value = document.getElementById("passwordInput").value.trim();
-      const error = document.getElementById("errorMessage");
+<p class="subtitle">
+Nhập mật khẩu nha ❤️
+</p>
 
-      if (value === PASSWORD) {
-        error.textContent = "";
-        showScreen("letterScreen");
-        createHearts(45);
-        revealLetter();
-      } else {
-        error.textContent = "Hmmm... Bì nhập sai rồi nè 🥺❤️";
-      }
-    }
+<input
+id="passwordInput"
+type="password"
+inputmode="numeric"
+placeholder="Nhập mật khẩu">
 
-    function revealLetter() {
-      const paragraphs = [...document.querySelectorAll("#letter p")];
-      const signature = document.getElementById("signature");
+<br>
 
-      paragraphs.forEach(p => p.classList.remove("show"));
-      signature.classList.remove("show");
+<button onclick="openLetter()">
+Mở thư
+</button>
 
-      paragraphs.forEach((p, i) => {
-        setTimeout(() => p.classList.add("show"), i * 1100);
-      });
+<div id="errorMessage" class="error"></div>
 
-      setTimeout(() => {
-        signature.classList.add("show");
-      }, paragraphs.length * 1100 + 400);
-    }
+</div>
+</section>
 
-    function createHearts(count = 30) {
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-          const heart = document.createElement("div");
-          heart.className = "heart";
-          heart.textContent = Math.random() > .5 ? "❤️" : "💗";
-          heart.style.left = Math.random() * 100 + "vw";
-          heart.style.fontSize = (14 + Math.random() * 22) + "px";
-          heart.style.animationDuration = (4 + Math.random() * 5) + "s";
-          document.body.appendChild(heart);
 
-          setTimeout(() => heart.remove(), 9000);
-        }, i * 120);
-      }
-    }
+<!-- LÁ THƯ -->
 
-    document.getElementById("passwordInput").addEventListener("keydown", e => {
-      if (e.key === "Enter") openLetter();
-    });
-  </script>
+<section id="letterScreen" class="screen">
+
+<div class="card letter-card">
+
+<h1 class="letter-title">
+Chúc mừng sinh nhật người em thương ❤️
+</h1>
+
+<div id="letter" class="letter">
+
+<p>
+Gửi chị ạ,
+</p>
+
+<p>
+Em mong rằng tuổi mới của chị sẽ luôn có thật nhiều niềm vui, thật nhiều hạnh phúc, luôn bình an và đạt được tất cả những điều mà chị đang mong muốn nha.
+</p>
+
+<p>
+Em biết tụi mình đôi khi vẫn chưa thật sự hiểu hết suy nghĩ của nhau💬. Có những lúc mình bất đồng, có những cuộc tranh cãi xảy ra khiến cả hai buồn lòng. Nhưng sau tất cả, em vẫn muốn ở lại bên chị. Em muốn học cách kiên nhẫn hơn, học cách lắng nghe chị nhiều hơn, học cách quan tâm và để ý đến những điều nhỏ bé xung quanh chị nhiều hơn. Vì lỡ mất chị rồi biết kiếm đâu ra ai thương em nhiều như chị đây 🥺
+</p>
+
+<p>
+Cảm ơn chị rất nhiều vì đã luôn ở đây và vẫn ở đây cạnh em. Cảm ơn chị vì từ những ngày đầu tiên đến bây giờ, chị vẫn luôn kiên nhẫn, dịu dàng và yêu thương em theo cách của chị. Có thể đôi lúc em chưa làm tốt, chưa thể hiện hết được tình cảm của mình, nhưng em thật sự rất trân trọng chị và những điều chị dành cho em.
+</p>
+
+<p>
+Em mong rằng tụi mình sẽ còn ở bên nhau thật lâu lâu, cùng nhau trải qua thêm thật nhiều kỷ niệm đẹp. Mong rằng sau này mình sẽ có nhiều chuyến đi cùng nhau, cùng khám phá những nơi mới, cùng đu idol, cùng nói xàm với nhau mỗi ngày.
+</p>
+
+<p>
+Chúc mừng sinh nhật bì iu của em 🎂❤️
+</p>
+
+<p>
+Em thương chị rất nhiều.
+</p>
+
+</div>
+
+<div id="signature" class="signature">
+— Bé của chị ❤️
+</div>
+
+</div>
+</section>
+
+
+<script>
+
+const PASSWORD = "0305";
+
+const voice = document.getElementById("voice");
+const music = document.getElementById("music");
+
+const startBtn =
+document.getElementById("startBtn");
+
+const introStatus =
+document.getElementById("introStatus");
+
+let started = false;
+let revealed = false;
+
+
+/* CHUYỂN MÀN HÌNH */
+
+function showScreen(id) {
+
+document
+.querySelectorAll(".screen")
+.forEach(screen => {
+
+screen.classList.remove("active");
+
+});
+
+document
+.getElementById(id)
+.classList.add("active");
+
+window.scrollTo(0,0);
+
+}
+
+
+/* BẤM NÚT ĐẦU */
+
+async function startSurprise() {
+
+if (started) return;
+
+started = true;
+
+startBtn.disabled = true;
+
+startBtn.textContent =
+"🎙️ Đang phát...";
+
+introStatus.textContent =
+"Nghe hết nha bì ❤️";
+
+
+/*
+QUAN TRỌNG:
+Tắt bài nhạc chính hoàn toàn
+trong lúc voice đang phát.
+*/
+
+music.pause();
+music.currentTime = 0;
+
+
+createHearts(18);
+
+
+try {
+
+voice.currentTime = 0;
+
+await voice.play();
+
+}
+
+catch(error) {
+
+introStatus.textContent =
+"Không mở được voice.m4a 🥺";
+
+startBtn.disabled = false;
+
+startBtn.textContent =
+"Bấm vô cái này i bì 💗";
+
+started = false;
+
+}
+
+}
+
+
+/*
+VOICE KẾT THÚC HOÀN TOÀN
+THÌ NHẠC CHÍNH MỚI BẮT ĐẦU
+*/
+
+voice.addEventListener(
+"ended",
+async () => {
+
+showScreen("loadingScreen");
+
+createHearts(22);
+
+
+music.currentTime = 0;
+
+/* nhạc bắt đầu rất nhỏ */
+
+music.volume = 0;
+
+
+try {
+
+await music.play();
+
+/* nhạc lớn dần */
+
+fadeInMusic(2600, 0.72);
+
+}
+
+catch(error) {
+
+console.log(
+"Không phát được music.m4a"
+);
+
+}
+
+
+/*
+Sau 2 giây chuyển
+sang màn hình mật khẩu.
+*/
+
+setTimeout(() => {
+
+showScreen(
+"passwordScreen"
+);
+
+}, 2000);
+
+});
+
+
+/* NHẠC FADE IN */
+
+function fadeInMusic(
+duration,
+targetVolume
+) {
+
+const steps = 32;
+
+let step = 0;
+
+const timer =
+setInterval(() => {
+
+step++;
+
+music.volume =
+Math.min(
+targetVolume,
+(step / steps)
+* targetVolume
+);
+
+if (step >= steps) {
+
+clearInterval(timer);
+
+}
+
+},
+duration / steps);
+
+}
+
+
+/* MỞ THƯ */
+
+function openLetter() {
+
+const password =
+document
+.getElementById(
+"passwordInput"
+)
+.value
+.trim();
+
+
+const error =
+document
+.getElementById(
+"errorMessage"
+);
+
+
+if (password !== PASSWORD) {
+
+error.textContent =
+"Hmmm... Bì nhập sai rồi nè 🥺❤️";
+
+return;
+
+}
+
+
+error.textContent = "";
+
+showScreen(
+"letterScreen"
+);
+
+createHearts(45);
+
+
+if (!revealed) {
+
+revealed = true;
+
+revealLetter();
+
+}
+
+}
+
+
+/* HIỆN THƯ TỪNG ĐOẠN */
+
+function revealLetter() {
+
+const paragraphs =
+[
+...document
+.querySelectorAll(
+"#letter p"
+)
+];
+
+
+const signature =
+document
+.getElementById(
+"signature"
+);
+
+
+paragraphs.forEach(
+(paragraph,index) => {
+
+setTimeout(() => {
+
+paragraph
+.classList
+.add("show");
+
+},
+index * 1050);
+
+});
+
+
+setTimeout(() => {
+
+signature
+.classList
+.add("show");
+
+},
+paragraphs.length
+* 1050
++ 500);
+
+}
+
+
+/* TIM RƠI */
+
+function createHearts(count) {
+
+for (
+let i = 0;
+i < count;
+i++
+) {
+
+setTimeout(() => {
+
+const heart =
+document
+.createElement("div");
+
+
+heart.className =
+"heart";
+
+
+heart.textContent =
+Math.random() > .5
+? "❤️"
+: "💗";
+
+
+heart.style.left =
+Math.random()
+* 100
++ "vw";
+
+
+heart.style.fontSize =
+14
++ Math.random()
+* 22
++ "px";
+
+
+heart.style.animationDuration =
+4
++ Math.random()
+* 5
++ "s";
+
+
+document.body
+.appendChild(heart);
+
+
+setTimeout(() => {
+
+heart.remove();
+
+},9000);
+
+
+},i * 120);
+
+}
+
+}
+
+
+/* BẤM ENTER ĐỂ MỞ THƯ */
+
+document
+.getElementById(
+"passwordInput"
+)
+.addEventListener(
+"keydown",
+event => {
+
+if (
+event.key === "Enter"
+) {
+
+openLetter();
+
+}
+
+});
+
+</script>
 
 </body>
 </html>
