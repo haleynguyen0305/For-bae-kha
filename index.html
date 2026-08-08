@@ -151,6 +151,24 @@ input {
   opacity: 1;
 }
 
+.final-button-wrap {
+  text-align: center;
+  margin-top: 34px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.final-button-wrap.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.final-button {
+  font-size: 18px;
+  padding: 14px 22px;
+}
+
 .heart {
   position: fixed;
   top: -55px;
@@ -164,9 +182,66 @@ input {
   animation: dots 1.35s steps(4,end) infinite;
 }
 
+
+/* ENDING */
+
+#endingScreen {
+  background:
+    radial-gradient(circle at center, rgba(255,70,130,.11), transparent 35%),
+    linear-gradient(180deg,#110810,#060606);
+}
+
+.ending-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.ending-line {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  font-size: clamp(23px,5vw,34px);
+  line-height: 1.5;
+  margin: 18px 0;
+  font-weight: 600;
+}
+
+.ending-line.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.final-heart {
+  margin-top: 34px;
+  font-size: 64px;
+  opacity: 0;
+  transform: scale(.7);
+  transition: opacity 1.4s ease, transform 1.4s ease;
+}
+
+.final-heart.show {
+  opacity: 1;
+  transform: scale(1);
+  animation: bigHeartbeat 1.4s infinite;
+}
+
+
 @keyframes heartbeat {
   50% {
     transform: scale(1.055);
+  }
+}
+
+@keyframes bigHeartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
   }
 }
 
@@ -201,6 +276,9 @@ input {
   <source src="music.m4a" type="audio/mp4">
 </audio>
 
+
+<!-- TRANG ĐẦU -->
+
 <section id="introScreen" class="screen active">
   <div class="card">
 
@@ -224,6 +302,9 @@ input {
   </div>
 </section>
 
+
+<!-- ĐANG MỞ QUÀ -->
+
 <section id="loadingScreen" class="screen">
   <div class="card">
 
@@ -239,6 +320,9 @@ input {
 
   </div>
 </section>
+
+
+<!-- MẬT KHẨU -->
 
 <section id="passwordScreen" class="screen">
   <div class="card">
@@ -270,6 +354,9 @@ input {
   </div>
 </section>
 
+
+<!-- LÁ THƯ -->
+
 <section id="letterScreen" class="screen">
 
   <div class="card letter-card">
@@ -280,7 +367,9 @@ input {
 
     <div id="letter" class="letter">
 
-      <p>Gửi chị ạ,</p>
+      <p>
+        Gửi chị ạ,
+      </p>
 
       <p>
         Em mong rằng tuổi mới của chị sẽ luôn có thật nhiều niềm vui, thật nhiều hạnh phúc, luôn bình an và đạt được tất cả những điều mà chị đang mong muốn nha.
@@ -312,8 +401,51 @@ input {
       — Bé của chị ❤️
     </div>
 
+    <div id="finalButtonWrap" class="final-button-wrap">
+
+      <button
+        class="final-button"
+        onclick="openEnding()">
+
+        💌 Còn một điều cuối cùng...
+
+      </button>
+
+    </div>
+
   </div>
 </section>
+
+
+<!-- ENDING -->
+
+<section id="endingScreen" class="screen">
+
+  <div class="card ending-card">
+
+    <div id="ending1" class="ending-line">
+      Hết thư rồi...
+    </div>
+
+    <div id="ending2" class="ending-line">
+      nhưng chuyện của tụi mình thì chưa đâu ❤️
+    </div>
+
+    <div id="ending3" class="ending-line">
+      Happy Birthday, bì iu. 🎂
+    </div>
+
+    <div id="ending4" class="ending-line">
+      Em thương chị. ❤️
+    </div>
+
+    <div id="finalHeart" class="final-heart">
+      ❤️
+    </div>
+
+  </div>
+</section>
+
 
 <script>
 
@@ -346,6 +478,8 @@ function showScreen(id) {
 }
 
 
+/* BẮT ĐẦU */
+
 async function startSurprise() {
 
   if (started) return;
@@ -353,26 +487,43 @@ async function startSurprise() {
   started = true;
 
   startBtn.disabled = true;
-  startBtn.textContent = "🎙️ Đang phát...";
-  introStatus.textContent = "Nghe hết nha bì ❤️";
+
+  startBtn.textContent =
+    "🎙️ Đang phát...";
+
+  introStatus.textContent =
+    "Nghe hết nha bì ❤️";
 
   createHearts(18);
 
   try {
 
+    /*
+    MỞ KHÓA NHẠC TRONG CÚ BẤM ĐẦU
+    */
+
     music.volume = 0;
+
     music.currentTime = 0;
 
     await music.play();
 
     music.pause();
+
     music.currentTime = 0;
+
+
+    /*
+    PHÁT VOICE
+    */
 
     voice.currentTime = 0;
 
     await voice.play();
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.log(error);
 
@@ -389,142 +540,215 @@ async function startSurprise() {
 }
 
 
-voice.addEventListener("ended", async () => {
+/*
+VOICE HẾT HẲN
+THÌ NHẠC CHÍNH MỚI CHẠY
+*/
+
+voice.addEventListener(
+"ended",
+async () => {
 
   showScreen("loadingScreen");
 
   createHearts(22);
 
   music.currentTime = 0;
+
   music.volume = 0;
 
   try {
 
     await music.play();
 
-    fadeInMusic(1800, 0.75);
-
-  } catch (error) {
-
-    console.log("Music bị chặn:", error);
+    fadeInMusic(
+      1800,
+      0.75
+    );
 
   }
 
+  catch (error) {
+
+    console.log(
+      "Music bị chặn:",
+      error
+    );
+
+  }
+
+
   setTimeout(() => {
 
-    showScreen("passwordScreen");
+    showScreen(
+      "passwordScreen"
+    );
 
   }, 2000);
 
 });
 
 
-function fadeInMusic(duration, targetVolume) {
+/* NHẠC TO DẦN */
+
+function fadeInMusic(
+duration,
+targetVolume
+) {
 
   const steps = 30;
 
   let step = 0;
 
-  const timer = setInterval(() => {
+  const timer =
+    setInterval(() => {
 
-    step++;
+      step++;
 
-    music.volume = Math.min(
-      targetVolume,
-      (step / steps) * targetVolume
-    );
+      music.volume =
+        Math.min(
+          targetVolume,
+          (step / steps)
+          * targetVolume
+        );
 
-    if (step >= steps) {
-      clearInterval(timer);
-    }
+      if (step >= steps) {
 
-  }, duration / steps);
+        clearInterval(timer);
+
+      }
+
+    },
+    duration / steps
+  );
+
 }
 
 
 /*
-LẶP NHẠC MƯỢT:
-GẦN HẾT BÀI -> NHỎ DẦN
--> QUAY VỀ ĐẦU
--> TO DẦN LẠI
+LOOP NHẠC MƯỢT
 */
 
-music.addEventListener("timeupdate", () => {
+music.addEventListener(
+"timeupdate",
+() => {
 
   if (
+
     music.duration &&
-    music.currentTime >= music.duration - 1.5 &&
+
+    music.currentTime
+    >= music.duration - 1.5 &&
+
     !loopingMusic
+
   ) {
 
     loopingMusic = true;
 
     const fadeSteps = 20;
-    const startVolume = music.volume;
+
+    const startVolume =
+      music.volume;
 
     let step = 0;
 
-    const fadeOut = setInterval(() => {
 
-      step++;
+    const fadeOut =
+      setInterval(() => {
 
-      music.volume = Math.max(
-        0,
-        startVolume * (1 - step / fadeSteps)
-      );
+        step++;
 
-      if (step >= fadeSteps) {
-
-        clearInterval(fadeOut);
-
-        music.pause();
-        music.currentTime = 0;
-        music.volume = 0;
-
-        music.play();
-
-        let fadeStep = 0;
-
-        const fadeIn = setInterval(() => {
-
-          fadeStep++;
-
-          music.volume = Math.min(
-            0.75,
-            0.75 * (fadeStep / fadeSteps)
+        music.volume =
+          Math.max(
+            0,
+            startVolume
+            * (1 - step / fadeSteps)
           );
 
-          if (fadeStep >= fadeSteps) {
 
-            clearInterval(fadeIn);
+        if (step >= fadeSteps) {
 
-            loopingMusic = false;
-          }
+          clearInterval(
+            fadeOut
+          );
 
-        }, 50);
+          music.pause();
 
-      }
+          music.currentTime = 0;
 
-    }, 50);
+          music.volume = 0;
+
+          music.play();
+
+
+          let fadeStep = 0;
+
+
+          const fadeIn =
+            setInterval(() => {
+
+              fadeStep++;
+
+              music.volume =
+                Math.min(
+                  0.75,
+                  0.75
+                  * (
+                    fadeStep
+                    / fadeSteps
+                  )
+                );
+
+
+              if (
+                fadeStep
+                >= fadeSteps
+              ) {
+
+                clearInterval(
+                  fadeIn
+                );
+
+                loopingMusic =
+                  false;
+
+              }
+
+            }, 50);
+
+        }
+
+      }, 50);
 
   }
 
 });
 
 
+/* MỞ THƯ */
+
 function openLetter() {
 
   const password =
     document
-      .getElementById("passwordInput")
+      .getElementById(
+        "passwordInput"
+      )
       .value
       .trim();
 
   const error =
     document
-      .getElementById("errorMessage");
+      .getElementById(
+        "errorMessage"
+      );
 
-  if (password !== PASSWORD) {
+
+  if (
+    password
+    !== PASSWORD
+  ) {
 
     error.textContent =
       "Hmmm... Bì nhập sai rồi nè 🥺❤️";
@@ -532,93 +756,317 @@ function openLetter() {
     return;
   }
 
+
   error.textContent = "";
 
-  showScreen("letterScreen");
+  showScreen(
+    "letterScreen"
+  );
 
   createHearts(45);
+
 
   if (!revealed) {
 
     revealed = true;
 
     revealLetter();
+
   }
+
 }
 
+
+/* HIỆN THƯ */
 
 function revealLetter() {
 
   const paragraphs = [
-    ...document.querySelectorAll("#letter p")
+
+    ...document
+      .querySelectorAll(
+        "#letter p"
+      )
+
   ];
 
+
   const signature =
-    document.getElementById("signature");
+    document
+      .getElementById(
+        "signature"
+      );
 
-  paragraphs.forEach((paragraph, index) => {
 
-    setTimeout(() => {
+  const finalButton =
+    document
+      .getElementById(
+        "finalButtonWrap"
+      );
 
-      paragraph.classList.add("show");
 
-    }, index * 1050);
+  paragraphs
+    .forEach(
+      (
+        paragraph,
+        index
+      ) => {
 
-  });
+        setTimeout(() => {
+
+          paragraph
+            .classList
+            .add("show");
+
+        },
+        index * 1050
+        );
+
+      }
+    );
+
 
   setTimeout(() => {
 
-    signature.classList.add("show");
+    signature
+      .classList
+      .add("show");
 
-  }, paragraphs.length * 1050 + 500);
+  },
+  paragraphs.length
+  * 1050
+  + 500
+  );
+
+
+  /*
+  NÚT CUỐI HIỆN
+  SAU CHỮ KÝ
+  */
+
+  setTimeout(() => {
+
+    finalButton
+      .classList
+      .add("show");
+
+  },
+  paragraphs.length
+  * 1050
+  + 2500
+  );
+
 }
 
 
+/*
+ENDING
+*/
+
+function openEnding() {
+
+  showScreen(
+    "endingScreen"
+  );
+
+  createHearts(22);
+
+
+  const line1 =
+    document
+      .getElementById(
+        "ending1"
+      );
+
+  const line2 =
+    document
+      .getElementById(
+        "ending2"
+      );
+
+  const line3 =
+    document
+      .getElementById(
+        "ending3"
+      );
+
+  const line4 =
+    document
+      .getElementById(
+        "ending4"
+      );
+
+  const heart =
+    document
+      .getElementById(
+        "finalHeart"
+      );
+
+
+  /*
+  1. HẾT THƯ RỒI
+  */
+
+  setTimeout(() => {
+
+    line1
+      .classList
+      .add("show");
+
+  }, 800);
+
+
+  /*
+  CHỜ 3 GIÂY
+  */
+
+  setTimeout(() => {
+
+    line2
+      .classList
+      .add("show");
+
+  }, 3800);
+
+
+  /*
+  CHỜ THÊM 4 GIÂY
+  */
+
+  setTimeout(() => {
+
+    line3
+      .classList
+      .add("show");
+
+  }, 7800);
+
+
+  /*
+  CHỜ THÊM 3.5 GIÂY
+  */
+
+  setTimeout(() => {
+
+    line4
+      .classList
+      .add("show");
+
+  }, 11300);
+
+
+  /*
+  SAU CÂU CUỐI
+  CHỜ 3 GIÂY
+  RỒI HIỆN ❤️
+  */
+
+  setTimeout(() => {
+
+    heart
+      .classList
+      .add("show");
+
+  }, 14300);
+
+}
+
+
+/* TIM RƠI */
+
 function createHearts(count) {
 
-  for (let i = 0; i < count; i++) {
+  for (
+    let i = 0;
+    i < count;
+    i++
+  ) {
 
     setTimeout(() => {
 
       const heart =
-        document.createElement("div");
+        document
+          .createElement(
+            "div"
+          );
 
-      heart.className = "heart";
+      heart.className =
+        "heart";
+
 
       heart.textContent =
-        Math.random() > .5
+        Math.random()
+        > .5
           ? "❤️"
           : "💗";
 
+
       heart.style.left =
-        Math.random() * 100 + "vw";
+        Math.random()
+        * 100
+        + "vw";
+
 
       heart.style.fontSize =
-        14 + Math.random() * 22 + "px";
+        14
+        + Math.random()
+        * 22
+        + "px";
 
-      heart.style.animationDuration =
-        4 + Math.random() * 5 + "s";
 
-      document.body.appendChild(heart);
+      heart
+        .style
+        .animationDuration =
+          4
+          + Math.random()
+          * 5
+          + "s";
+
+
+      document
+        .body
+        .appendChild(
+          heart
+        );
+
 
       setTimeout(() => {
+
         heart.remove();
+
       }, 9000);
 
+
     }, i * 120);
+
   }
+
 }
 
 
+/*
+ENTER ĐỂ MỞ THƯ
+*/
+
 document
-  .getElementById("passwordInput")
-  .addEventListener("keydown", event => {
+  .getElementById(
+    "passwordInput"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
 
-    if (event.key === "Enter") {
-      openLetter();
+      if (
+        event.key
+        === "Enter"
+      ) {
+
+        openLetter();
+
+      }
+
     }
-
-  });
+  );
 
 </script>
 
