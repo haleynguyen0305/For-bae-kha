@@ -250,6 +250,7 @@ input{
 
 <section id="introScreen" class="screen active">
   <div class="card">
+
     <div class="emoji">💌</div>
 
     <h1>Dành riêng cho bì iu ❤️</h1>
@@ -266,11 +267,13 @@ input{
     </button>
 
     <div id="introStatus" class="status"></div>
+
   </div>
 </section>
 
 <section id="loadingScreen" class="screen">
   <div class="card">
+
     <div class="emoji">✨</div>
 
     <h1>
@@ -280,11 +283,13 @@ input{
     <p class="subtitle">
       Chờ em một xíu nha ❤️
     </p>
+
   </div>
 </section>
 
 <section id="passwordScreen" class="screen">
   <div class="card">
+
     <div class="emoji">💌</div>
 
     <h1>
@@ -308,10 +313,12 @@ input{
     </button>
 
     <div id="errorMessage" class="error"></div>
+
   </div>
 </section>
 
 <section id="letterScreen" class="screen">
+
   <div class="card letter-card">
 
     <h1 class="letter-title">
@@ -362,6 +369,7 @@ input{
 </section>
 
 <section id="endingScreen" class="screen">
+
   <div class="card ending-card">
 
     <div id="ending1" class="ending-line">
@@ -418,6 +426,14 @@ function showScreen(id){
 }
 
 
+/*
+BẤM NÚT ĐẦU
+
+NHẠC ĐƯỢC "MỞ KHÓA"
+NHƯNG MUTED HOÀN TOÀN
+NÊN KHÔNG THỂ LỌT TIẾNG
+*/
+
 async function startSurprise(){
 
   if(started) return;
@@ -436,10 +452,16 @@ async function startSurprise(){
 
   try{
 
+    /* NHẠC CHẠY NHƯNG TẮT TIẾNG */
+
     music.currentTime = 0;
     music.volume = 0;
+    music.muted = true;
 
     await music.play();
+
+
+    /* CHỈ PHÁT GIỌNG CỦA BẠN */
 
     voice.currentTime = 0;
 
@@ -464,14 +486,30 @@ async function startSurprise(){
 }
 
 
+/*
+VOICE KẾT THÚC HẲN
+THÌ MỚI BẬT TIẾNG NHẠC
+*/
+
 voice.addEventListener("ended",()=>{
 
   showScreen("loadingScreen");
 
   createHearts(22);
 
+
+  /* NHẠC QUAY VỀ ĐẦU */
+
   music.currentTime = 0;
+
+
+  /* BÂY GIỜ MỚI CHO NGHE NHẠC */
+
   music.volume = 0;
+  music.muted = false;
+
+
+  /* NHẠC FADE IN */
 
   fadeInMusic(
     1800,
@@ -480,8 +518,9 @@ voice.addEventListener("ended",()=>{
 
 
   /*
-  GIỮ MÀN "ĐANG MỞ MÓN QUÀ"
-  TRONG 8 GIÂY
+  GIỮ MÀN
+  "ĐANG MỞ MÓN QUÀ"
+  TRONG 10 GIÂY
   */
 
   setTimeout(()=>{
@@ -490,7 +529,7 @@ voice.addEventListener("ended",()=>{
       "passwordScreen"
     );
 
-  },8000);
+  },10000);
 
 });
 
@@ -528,6 +567,10 @@ function fadeInMusic(
 }
 
 
+/*
+LOOP NHẠC MƯỢT
+*/
+
 music.addEventListener(
 "timeupdate",
 ()=>{
@@ -539,7 +582,9 @@ music.addEventListener(
     music.currentTime
     >= music.duration - 1.5 &&
 
-    !loopingMusic
+    !loopingMusic &&
+
+    !music.muted
 
   ){
 
@@ -571,7 +616,6 @@ music.addEventListener(
           clearInterval(fadeOut);
 
           music.currentTime = 0;
-
           music.volume = 0;
 
 
