@@ -6,262 +6,234 @@
 <title>Một lá thư dành riêng cho chị ❤️</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+*{box-sizing:border-box}
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  color: white;
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:white;
   background:
-    radial-gradient(circle at 20% 0%, rgba(255,80,145,.18), transparent 30%),
+    radial-gradient(circle at 20% 0%,rgba(255,80,145,.18),transparent 30%),
     linear-gradient(180deg,#180c16,#0d0810 55%,#070707);
-  overflow-x: hidden;
+  overflow-x:hidden;
 }
 
-.screen {
-  display: none;
-  min-height: 100vh;
-  padding: 24px 18px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.screen{
+  display:none;
+  min-height:100vh;
+  padding:24px 18px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
 }
 
-.screen.active {
-  display: flex;
+.screen.active{display:flex}
+
+.card{
+  width:100%;
+  max-width:720px;
+  padding:38px 24px;
+  border-radius:28px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 70px rgba(0,0,0,.42);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
 
-.card {
-  width: 100%;
-  max-width: 720px;
-  padding: 38px 24px;
-  border-radius: 28px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 24px 70px rgba(0,0,0,.42);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+h1{
+  margin:0 0 18px;
+  font-size:clamp(30px,7vw,52px);
+  line-height:1.25;
 }
 
-h1 {
-  margin: 0 0 18px;
-  font-size: clamp(30px,7vw,52px);
-  line-height: 1.25;
+.subtitle{
+  margin:0 0 28px;
+  font-size:19px;
+  line-height:1.7;
+  opacity:.9;
 }
 
-.subtitle {
-  margin: 0 0 28px;
-  font-size: 19px;
-  line-height: 1.7;
-  opacity: .9;
+.emoji{
+  font-size:50px;
+  margin-bottom:16px;
+  animation:float 2.2s ease-in-out infinite;
 }
 
-.emoji {
-  font-size: 50px;
-  margin-bottom: 16px;
-  animation: float 2.2s ease-in-out infinite;
+button{
+  border:0;
+  border-radius:18px;
+  padding:16px 24px;
+  font-size:20px;
+  font-weight:700;
+  color:white;
+  background:linear-gradient(135deg,#ff4f91,#ff758c);
+  box-shadow:0 12px 30px rgba(255,79,145,.32);
+  cursor:pointer;
 }
 
-button {
-  border: 0;
-  border-radius: 18px;
-  padding: 16px 24px;
-  font-size: 20px;
-  font-weight: 700;
-  color: white;
-  background: linear-gradient(135deg,#ff4f91,#ff758c);
-  box-shadow: 0 12px 30px rgba(255,79,145,.32);
-  cursor: pointer;
+button:active{transform:scale(.96)}
+button:disabled{opacity:.7}
+
+.main-button{animation:heartbeat 1.45s infinite}
+
+.status{
+  min-height:26px;
+  margin-top:18px;
+  font-size:16px;
+  opacity:.82;
 }
 
-button:active {
-  transform: scale(.96);
+input{
+  width:100%;
+  max-width:480px;
+  margin:10px 0 20px;
+  padding:17px;
+  border:0;
+  border-radius:16px;
+  font-size:20px;
+  text-align:center;
+  outline:none;
 }
 
-button:disabled {
-  opacity: .7;
+.error{
+  min-height:26px;
+  margin-top:15px;
+  color:#ffacc8;
 }
 
-.main-button {
-  animation: heartbeat 1.45s infinite;
+.letter-card{text-align:left}
+
+.letter-title{
+  text-align:center;
+  margin-bottom:30px;
 }
 
-.status {
-  min-height: 26px;
-  margin-top: 18px;
-  font-size: 16px;
-  opacity: .82;
+.letter p{
+  margin:0 0 20px;
+  font-size:18px;
+  line-height:1.95;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .9s ease,transform .9s ease;
 }
 
-input {
-  width: 100%;
-  max-width: 480px;
-  margin: 10px 0 20px;
-  padding: 17px;
-  border: 0;
-  border-radius: 16px;
-  font-size: 20px;
-  text-align: center;
-  outline: none;
+.letter p.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
-.error {
-  min-height: 26px;
-  margin-top: 15px;
-  color: #ffacc8;
+.signature{
+  margin-top:36px;
+  text-align:right;
+  font-weight:700;
+  font-size:19px;
+  color:#ff9cba;
+  opacity:0;
+  transition:opacity 1s;
 }
 
-.letter-card {
-  text-align: left;
+.signature.show{opacity:1}
+
+.final-button-wrap{
+  text-align:center;
+  margin-top:34px;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 1s ease,transform 1s ease;
 }
 
-.letter-title {
-  text-align: center;
-  margin-bottom: 30px;
+.final-button-wrap.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
-.letter p {
-  margin: 0 0 20px;
-  font-size: 18px;
-  line-height: 1.95;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .9s ease, transform .9s ease;
+.final-button{
+  font-size:18px;
+  padding:14px 22px;
 }
 
-.letter p.show {
-  opacity: 1;
-  transform: translateY(0);
+.heart{
+  position:fixed;
+  top:-55px;
+  z-index:1;
+  pointer-events:none;
+  animation:fall linear forwards;
 }
 
-.signature {
-  margin-top: 36px;
-  text-align: right;
-  font-weight: 700;
-  font-size: 19px;
-  color: #ff9cba;
-  opacity: 0;
-  transition: opacity 1s;
+.loading-dots::after{
+  content:"";
+  animation:dots 1.35s steps(4,end) infinite;
 }
 
-.signature.show {
-  opacity: 1;
-}
-
-.final-button-wrap {
-  text-align: center;
-  margin-top: 34px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-
-.final-button-wrap.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.final-button {
-  font-size: 18px;
-  padding: 14px 22px;
-}
-
-.heart {
-  position: fixed;
-  top: -55px;
-  z-index: 1;
-  pointer-events: none;
-  animation: fall linear forwards;
-}
-
-.loading-dots::after {
-  content: "";
-  animation: dots 1.35s steps(4,end) infinite;
-}
-
-
-/* ENDING */
-
-#endingScreen {
+#endingScreen{
   background:
-    radial-gradient(circle at center, rgba(255,70,130,.11), transparent 35%),
+    radial-gradient(circle at center,rgba(255,70,130,.11),transparent 35%),
     linear-gradient(180deg,#110810,#060606);
 }
 
-.ending-card {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+.ending-card{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 
-.ending-line {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 1.2s ease, transform 1.2s ease;
-  font-size: clamp(23px,5vw,34px);
-  line-height: 1.5;
-  margin: 18px 0;
-  font-weight: 600;
+.ending-line{
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity 1.2s ease,transform 1.2s ease;
+  font-size:clamp(23px,5vw,34px);
+  line-height:1.5;
+  margin:18px 0;
+  font-weight:600;
 }
 
-.ending-line.show {
-  opacity: 1;
-  transform: translateY(0);
+.ending-line.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
-.final-heart {
-  margin-top: 34px;
-  font-size: 64px;
-  opacity: 0;
-  transform: scale(.7);
-  transition: opacity 1.4s ease, transform 1.4s ease;
+.final-heart{
+  margin-top:34px;
+  font-size:64px;
+  opacity:0;
+  transform:scale(.7);
+  transition:opacity 1.4s ease,transform 1.4s ease;
 }
 
-.final-heart.show {
-  opacity: 1;
-  transform: scale(1);
-  animation: bigHeartbeat 1.4s infinite;
+.final-heart.show{
+  opacity:1;
+  transform:scale(1);
+  animation:bigHeartbeat 1.4s infinite;
 }
 
+@keyframes heartbeat{
+  50%{transform:scale(1.055)}
+}
 
-@keyframes heartbeat {
-  50% {
-    transform: scale(1.055);
+@keyframes bigHeartbeat{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.12)}
+}
+
+@keyframes float{
+  50%{transform:translateY(-9px)}
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(115vh) rotate(360deg);
+    opacity:0;
   }
 }
 
-@keyframes bigHeartbeat {
-  0%, 100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.12);
-  }
-}
-
-@keyframes float {
-  50% {
-    transform: translateY(-9px);
-  }
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(115vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes dots {
-  25% { content: "."; }
-  50% { content: ".."; }
-  75% { content: "..."; }
+@keyframes dots{
+  25%{content:"."}
+  50%{content:".."}
+  75%{content:"..."}
 }
 </style>
 </head>
@@ -276,12 +248,8 @@ input {
   <source src="music.m4a" type="audio/mp4">
 </audio>
 
-
-<!-- TRANG ĐẦU -->
-
 <section id="introScreen" class="screen active">
   <div class="card">
-
     <div class="emoji">💌</div>
 
     <h1>Dành riêng cho bì iu ❤️</h1>
@@ -298,16 +266,11 @@ input {
     </button>
 
     <div id="introStatus" class="status"></div>
-
   </div>
 </section>
 
-
-<!-- ĐANG MỞ QUÀ -->
-
 <section id="loadingScreen" class="screen">
   <div class="card">
-
     <div class="emoji">✨</div>
 
     <h1>
@@ -317,16 +280,11 @@ input {
     <p class="subtitle">
       Chờ em một xíu nha ❤️
     </p>
-
   </div>
 </section>
 
-
-<!-- MẬT KHẨU -->
-
 <section id="passwordScreen" class="screen">
   <div class="card">
-
     <div class="emoji">💌</div>
 
     <h1>
@@ -350,15 +308,10 @@ input {
     </button>
 
     <div id="errorMessage" class="error"></div>
-
   </div>
 </section>
 
-
-<!-- LÁ THƯ -->
-
 <section id="letterScreen" class="screen">
-
   <div class="card letter-card">
 
     <h1 class="letter-title">
@@ -367,9 +320,7 @@ input {
 
     <div id="letter" class="letter">
 
-      <p>
-        Gửi chị ạ,
-      </p>
+      <p>Gửi chị ạ,</p>
 
       <p>
         Em mong rằng tuổi mới của chị sẽ luôn có thật nhiều niềm vui, thật nhiều hạnh phúc, luôn bình an và đạt được tất cả những điều mà chị đang mong muốn nha.
@@ -402,25 +353,15 @@ input {
     </div>
 
     <div id="finalButtonWrap" class="final-button-wrap">
-
-      <button
-        class="final-button"
-        onclick="openEnding()">
-
+      <button class="final-button" onclick="openEnding()">
         💌 Còn một điều cuối cùng...
-
       </button>
-
     </div>
 
   </div>
 </section>
 
-
-<!-- ENDING -->
-
 <section id="endingScreen" class="screen">
-
   <div class="card ending-card">
 
     <div id="ending1" class="ending-line">
@@ -446,7 +387,6 @@ input {
   </div>
 </section>
 
-
 <script>
 
 const PASSWORD = "0305";
@@ -462,11 +402,11 @@ let revealed = false;
 let loopingMusic = false;
 
 
-function showScreen(id) {
+function showScreen(id){
 
   document
     .querySelectorAll(".screen")
-    .forEach(screen => {
+    .forEach(screen=>{
       screen.classList.remove("active");
     });
 
@@ -474,15 +414,13 @@ function showScreen(id) {
     .getElementById(id)
     .classList.add("active");
 
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 
 
-/* BẮT ĐẦU */
+async function startSurprise(){
 
-async function startSurprise() {
-
-  if (started) return;
+  if(started) return;
 
   started = true;
 
@@ -496,26 +434,12 @@ async function startSurprise() {
 
   createHearts(18);
 
-  try {
+  try{
 
-    /*
-    MỞ KHÓA NHẠC TRONG CÚ BẤM ĐẦU
-    */
-
+    music.currentTime = 0;
     music.volume = 0;
 
-    music.currentTime = 0;
-
     await music.play();
-
-    music.pause();
-
-    music.currentTime = 0;
-
-
-    /*
-    PHÁT VOICE
-    */
 
     voice.currentTime = 0;
 
@@ -523,7 +447,7 @@ async function startSurprise() {
 
   }
 
-  catch (error) {
+  catch(error){
 
     console.log(error);
 
@@ -540,105 +464,75 @@ async function startSurprise() {
 }
 
 
-/*
-VOICE HẾT HẲN
-THÌ NHẠC CHÍNH MỚI CHẠY
-*/
-
-voice.addEventListener(
-"ended",
-async () => {
+voice.addEventListener("ended",()=>{
 
   showScreen("loadingScreen");
 
   createHearts(22);
 
   music.currentTime = 0;
-
   music.volume = 0;
 
-  try {
-
-    await music.play();
-
-    fadeInMusic(
-      1800,
-      0.75
-    );
-
-  }
-
-  catch (error) {
-
-    console.log(
-      "Music bị chặn:",
-      error
-    );
-
-  }
+  fadeInMusic(
+    1800,
+    0.75
+  );
 
 
   /*
   GIỮ MÀN "ĐANG MỞ MÓN QUÀ"
-  TRONG 4 GIÂY
+  TRONG 8 GIÂY
   */
 
-  setTimeout(() => {
+  setTimeout(()=>{
 
     showScreen(
       "passwordScreen"
     );
 
-  }, 4000);
+  },8000);
 
 });
 
 
-/* NHẠC TO DẦN */
-
 function fadeInMusic(
-duration,
-targetVolume
-) {
+  duration,
+  targetVolume
+){
 
   const steps = 30;
 
   let step = 0;
 
   const timer =
-    setInterval(() => {
+    setInterval(()=>{
 
       step++;
 
       music.volume =
         Math.min(
           targetVolume,
-          (step / steps)
-          * targetVolume
+          (step/steps)
+          *targetVolume
         );
 
-      if (step >= steps) {
+      if(step>=steps){
 
         clearInterval(timer);
 
       }
 
     },
-    duration / steps
+    duration/steps
   );
-
 }
 
 
-/*
-LOOP NHẠC MƯỢT
-*/
-
 music.addEventListener(
 "timeupdate",
-() => {
+()=>{
 
-  if (
+  if(
 
     music.duration &&
 
@@ -647,7 +541,7 @@ music.addEventListener(
 
     !loopingMusic
 
-  ) {
+  ){
 
     loopingMusic = true;
 
@@ -660,7 +554,7 @@ music.addEventListener(
 
 
     const fadeOut =
-      setInterval(() => {
+      setInterval(()=>{
 
         step++;
 
@@ -668,30 +562,24 @@ music.addEventListener(
           Math.max(
             0,
             startVolume
-            * (1 - step / fadeSteps)
+            *(1-step/fadeSteps)
           );
 
 
-        if (step >= fadeSteps) {
+        if(step>=fadeSteps){
 
-          clearInterval(
-            fadeOut
-          );
-
-          music.pause();
+          clearInterval(fadeOut);
 
           music.currentTime = 0;
 
           music.volume = 0;
-
-          music.play();
 
 
           let fadeStep = 0;
 
 
           const fadeIn =
-            setInterval(() => {
+            setInterval(()=>{
 
               fadeStep++;
 
@@ -699,17 +587,14 @@ music.addEventListener(
                 Math.min(
                   0.75,
                   0.75
-                  * (
-                    fadeStep
-                    / fadeSteps
-                  )
+                  *(fadeStep/fadeSteps)
                 );
 
 
-              if (
+              if(
                 fadeStep
-                >= fadeSteps
-              ) {
+                >=fadeSteps
+              ){
 
                 clearInterval(
                   fadeIn
@@ -717,23 +602,20 @@ music.addEventListener(
 
                 loopingMusic =
                   false;
-
               }
 
-            }, 50);
+            },50);
 
         }
 
-      }, 50);
+      },50);
 
   }
 
 });
 
 
-/* MỞ THƯ */
-
-function openLetter() {
+function openLetter(){
 
   const password =
     document
@@ -750,10 +632,7 @@ function openLetter() {
       );
 
 
-  if (
-    password
-    !== PASSWORD
-  ) {
+  if(password!==PASSWORD){
 
     error.textContent =
       "Hmmm... Bì nhập sai rồi nè 🥺❤️";
@@ -771,7 +650,7 @@ function openLetter() {
   createHearts(45);
 
 
-  if (!revealed) {
+  if(!revealed){
 
     revealed = true;
 
@@ -782,17 +661,13 @@ function openLetter() {
 }
 
 
-/* HIỆN THƯ */
-
-function revealLetter() {
+function revealLetter(){
 
   const paragraphs = [
-
     ...document
       .querySelectorAll(
         "#letter p"
       )
-
   ];
 
 
@@ -810,28 +685,22 @@ function revealLetter() {
       );
 
 
-  paragraphs
-    .forEach(
-      (
-        paragraph,
-        index
-      ) => {
+  paragraphs.forEach(
+    (paragraph,index)=>{
 
-        setTimeout(() => {
+      setTimeout(()=>{
 
-          paragraph
-            .classList
-            .add("show");
+        paragraph
+          .classList
+          .add("show");
 
-        },
-        index * 1050
-        );
+      },index*1050);
 
-      }
-    );
+    }
+  );
 
 
-  setTimeout(() => {
+  setTimeout(()=>{
 
     signature
       .classList
@@ -839,17 +708,11 @@ function revealLetter() {
 
   },
   paragraphs.length
-  * 1050
-  + 500
+  *1050+500
   );
 
 
-  /*
-  NÚT CUỐI HIỆN
-  SAU CHỮ KÝ
-  */
-
-  setTimeout(() => {
+  setTimeout(()=>{
 
     finalButton
       .classList
@@ -857,18 +720,13 @@ function revealLetter() {
 
   },
   paragraphs.length
-  * 1050
-  + 2500
+  *1050+2500
   );
 
 }
 
 
-/*
-ENDING
-*/
-
-function openEnding() {
+function openEnding(){
 
   showScreen(
     "endingScreen"
@@ -878,180 +736,107 @@ function openEnding() {
 
 
   const line1 =
-    document
-      .getElementById(
-        "ending1"
-      );
+    document.getElementById("ending1");
 
   const line2 =
-    document
-      .getElementById(
-        "ending2"
-      );
+    document.getElementById("ending2");
 
   const line3 =
-    document
-      .getElementById(
-        "ending3"
-      );
+    document.getElementById("ending3");
 
   const line4 =
-    document
-      .getElementById(
-        "ending4"
-      );
+    document.getElementById("ending4");
 
   const heart =
-    document
-      .getElementById(
-        "finalHeart"
-      );
+    document.getElementById("finalHeart");
 
 
-  /*
-  HẾT THƯ RỒI...
-  */
-
-  setTimeout(() => {
-
-    line1
-      .classList
-      .add("show");
-
-  }, 800);
+  setTimeout(()=>{
+    line1.classList.add("show");
+  },800);
 
 
-  /*
-  CHỜ 3 GIÂY
-  */
-
-  setTimeout(() => {
-
-    line2
-      .classList
-      .add("show");
-
-  }, 3800);
+  setTimeout(()=>{
+    line2.classList.add("show");
+  },3800);
 
 
-  /*
-  CHỜ THÊM 4 GIÂY
-  */
-
-  setTimeout(() => {
-
-    line3
-      .classList
-      .add("show");
-
-  }, 7800);
+  setTimeout(()=>{
+    line3.classList.add("show");
+  },7800);
 
 
-  /*
-  CHỜ THÊM 3.5 GIÂY
-  */
-
-  setTimeout(() => {
-
-    line4
-      .classList
-      .add("show");
-
-  }, 11300);
+  setTimeout(()=>{
+    line4.classList.add("show");
+  },11300);
 
 
-  /*
-  SAU CÂU CUỐI
-  CHỜ 3 GIÂY
-  RỒI HIỆN ❤️
-  */
-
-  setTimeout(() => {
-
-    heart
-      .classList
-      .add("show");
-
-  }, 14300);
+  setTimeout(()=>{
+    heart.classList.add("show");
+  },14300);
 
 }
 
 
-/* TIM RƠI */
+function createHearts(count){
 
-function createHearts(count) {
-
-  for (
-    let i = 0;
-    i < count;
+  for(
+    let i=0;
+    i<count;
     i++
-  ) {
+  ){
 
-    setTimeout(() => {
+    setTimeout(()=>{
 
       const heart =
         document
-          .createElement(
-            "div"
-          );
+          .createElement("div");
 
       heart.className =
         "heart";
 
 
       heart.textContent =
-        Math.random()
-        > .5
-          ? "❤️"
-          : "💗";
+        Math.random()>.5
+          ?"❤️"
+          :"💗";
 
 
       heart.style.left =
-        Math.random()
-        * 100
-        + "vw";
+        Math.random()*100
+        +"vw";
 
 
       heart.style.fontSize =
         14
-        + Math.random()
-        * 22
-        + "px";
+        +Math.random()*22
+        +"px";
 
 
-      heart
-        .style
-        .animationDuration =
-          4
-          + Math.random()
-          * 5
-          + "s";
+      heart.style.animationDuration =
+        4
+        +Math.random()*5
+        +"s";
 
 
       document
         .body
-        .appendChild(
-          heart
-        );
+        .appendChild(heart);
 
 
-      setTimeout(() => {
+      setTimeout(()=>{
 
         heart.remove();
 
-      }, 9000);
+      },9000);
 
 
-    }, i * 120);
+    },i*120);
 
   }
 
 }
 
-
-/*
-ENTER ĐỂ MỞ THƯ
-*/
 
 document
   .getElementById(
@@ -1059,12 +844,11 @@ document
   )
   .addEventListener(
     "keydown",
-    event => {
+    event=>{
 
-      if (
-        event.key
-        === "Enter"
-      ) {
+      if(
+        event.key==="Enter"
+      ){
 
         openLetter();
 
