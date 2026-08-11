@@ -1,3 +1,550 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Một lá thư dành riêng cho chị ❤️</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:white;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(255,80,145,.18),transparent 30%),
+    linear-gradient(180deg,#180c16,#0d0810 55%,#070707);
+  overflow-x:hidden;
+}
+
+.screen{
+  display:none;
+  min-height:100vh;
+  padding:24px 18px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.screen.active{display:flex}
+
+.card{
+  width:100%;
+  max-width:720px;
+  padding:38px 24px;
+  border-radius:28px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 70px rgba(0,0,0,.42);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+h1{
+  margin:0 0 18px;
+  font-size:clamp(30px,7vw,52px);
+  line-height:1.25;
+}
+
+.subtitle{
+  margin:0 0 28px;
+  font-size:19px;
+  line-height:1.7;
+  opacity:.9;
+}
+
+.emoji{
+  font-size:50px;
+  margin-bottom:16px;
+  animation:float 2.2s ease-in-out infinite;
+}
+
+button{
+  border:0;
+  border-radius:18px;
+  padding:16px 24px;
+  font-size:20px;
+  font-weight:700;
+  color:white;
+  background:linear-gradient(135deg,#ff4f91,#ff758c);
+  box-shadow:0 12px 30px rgba(255,79,145,.32);
+  cursor:pointer;
+}
+
+button:active{transform:scale(.96)}
+button:disabled{opacity:.7}
+
+.main-button{animation:heartbeat 1.45s infinite}
+
+.status{
+  min-height:26px;
+  margin-top:18px;
+  font-size:16px;
+  opacity:.82;
+}
+
+input{
+  width:100%;
+  max-width:480px;
+  margin:10px 0 20px;
+  padding:17px;
+  border:0;
+  border-radius:16px;
+  font-size:20px;
+  text-align:center;
+  outline:none;
+}
+
+.error{
+  min-height:26px;
+  margin-top:15px;
+  color:#ffacc8;
+}
+
+.letter-card{text-align:left}
+
+.letter-title{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.letter p{
+  margin:0 0 20px;
+  font-size:18px;
+  line-height:1.95;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .9s ease,transform .9s ease;
+}
+
+.letter p.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.signature{
+  margin-top:36px;
+  text-align:right;
+  font-weight:700;
+  font-size:19px;
+  color:#ff9cba;
+  opacity:0;
+  transition:opacity 1s;
+}
+
+.signature.show{opacity:1}
+
+.final-button-wrap{
+  text-align:center;
+  margin-top:34px;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 1s ease,transform 1s ease;
+}
+
+.final-button-wrap.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.final-button{
+  font-size:18px;
+  padding:14px 22px;
+}
+
+.heart{
+  position:fixed;
+  top:-55px;
+  z-index:1;
+  pointer-events:none;
+  animation:fall linear forwards;
+}
+
+.loading-dots::after{
+  content:"";
+  animation:dots 1.35s steps(4,end) infinite;
+}
+
+#endingScreen{
+  background:
+    radial-gradient(circle at center,rgba(255,70,130,.11),transparent 35%),
+    linear-gradient(180deg,#110810,#060606);
+}
+
+.ending-card{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+
+.ending-line{
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity 1.2s ease,transform 1.2s ease;
+  font-size:clamp(23px,5vw,34px);
+  line-height:1.5;
+  margin:18px 0;
+  font-weight:600;
+}
+
+.ending-line.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.final-heart{
+  margin-top:34px;
+  font-size:64px;
+  opacity:0;
+  transform:scale(.7);
+  transition:opacity 1.4s ease,transform 1.4s ease;
+}
+
+.final-heart.show{
+  opacity:1;
+  transform:scale(1);
+  animation:bigHeartbeat 1.4s infinite;
+}
+
+@keyframes heartbeat{
+  50%{transform:scale(1.055)}
+}
+
+@keyframes bigHeartbeat{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.12)}
+}
+
+@keyframes float{
+  50%{transform:translateY(-9px)}
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(115vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+@keyframes dots{
+  25%{content:"."}
+  50%{content:".."}
+  75%{content:"..."}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="voice" preload="auto">
+  <source src="voice.m4a" type="audio/mp4">
+</audio>
+
+<audio id="music" preload="auto">
+  <source src="music.m4a" type="audio/mp4">
+</audio>
+
+<section id="introScreen" class="screen active">
+  <div class="card">
+    <div class="emoji">💌</div>
+    <h1>Dành riêng cho bì iu ❤️</h1>
+    <p class="subtitle">Có một điều nhỏ em muốn dành cho chị...</p>
+
+    <button id="startBtn" class="main-button" onclick="startSurprise()">
+      Bấm vô cái này i bì 💗
+    </button>
+
+    <div id="introStatus" class="status"></div>
+  </div>
+</section>
+
+<section id="loadingScreen" class="screen">
+  <div class="card">
+    <div class="emoji">✨</div>
+
+    <h1>
+      Đang mở món quà<span class="loading-dots"></span>
+    </h1>
+
+    <p class="subtitle">
+      Chờ em một xíu nha ❤️
+    </p>
+  </div>
+</section>
+
+<section id="passwordScreen" class="screen">
+  <div class="card">
+    <div class="emoji">💌</div>
+
+    <h1>
+      Có một lá thư dành riêng cho chị...
+    </h1>
+
+    <p class="subtitle">
+      Nhập mật khẩu nha ❤️
+    </p>
+
+    <input
+      id="passwordInput"
+      type="password"
+      inputmode="numeric"
+      placeholder="Nhập mật khẩu">
+
+    <br>
+
+    <button onclick="openLetter()">
+      Mở thư
+    </button>
+
+    <div id="errorMessage" class="error"></div>
+  </div>
+</section>
+
+<section id="letterScreen" class="screen">
+  <div class="card letter-card">
+
+    <h1 class="letter-title">
+      Chúc mừng sinh nhật người em thương ❤️
+    </h1>
+
+    <div id="letter" class="letter">
+
+      <p>Gửi chị ạ,</p>
+
+      <p>
+        Em mong rằng tuổi mới của chị sẽ luôn có thật nhiều niềm vui, thật nhiều hạnh phúc, luôn bình an và đạt được tất cả những điều mà chị đang mong muốn nha.
+      </p>
+
+      <p>
+        Em biết tụi mình đôi khi vẫn chưa thật sự hiểu hết suy nghĩ của nhau💬. Có những lúc mình bất đồng, có những cuộc tranh cãi xảy ra khiến cả hai buồn lòng. Nhưng sau tất cả, em vẫn muốn ở lại bên chị. Em muốn học cách kiên nhẫn hơn, học cách lắng nghe chị nhiều hơn, học cách quan tâm và để ý đến những điều nhỏ bé xung quanh chị nhiều hơn. Vì lỡ mất chị rồi biết kiếm đâu ra ai thương em nhiều như chị đây 🥺
+      </p>
+
+      <p>
+        Cảm ơn chị rất nhiều vì đã luôn ở đây và vẫn ở đây cạnh em. Cảm ơn chị vì từ những ngày đầu tiên đến bây giờ, chị vẫn luôn kiên nhẫn, dịu dàng và yêu thương em theo cách của chị. Có thể đôi lúc em chưa làm tốt, chưa thể hiện hết được tình cảm của mình, nhưng em thật sự rất trân trọng chị và những điều chị dành cho em.
+      </p>
+
+      <p>
+        Em mong rằng tụi mình sẽ còn ở bên nhau thật lâu lâu, cùng nhau trải qua thêm thật nhiều kỷ niệm đẹp. Mong rằng sau này mình sẽ có nhiều chuyến đi cùng nhau, cùng khám phá những nơi mới, cùng đu idol, cùng nói xàm với nhau mỗi ngày.
+      </p>
+
+      <p>
+        Chúc mừng sinh nhật bì iu của em 🎂❤️
+      </p>
+
+      <p>
+        Em thương chị rất nhiều.
+      </p>
+
+    </div>
+
+    <div id="signature" class="signature">
+      — Bé của chị ❤️
+    </div>
+
+    <div id="finalButtonWrap" class="final-button-wrap">
+      <button class="final-button" onclick="openEnding()">
+        💌 Còn một điều cuối cùng...
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<section id="endingScreen" class="screen">
+  <div class="card ending-card">
+
+    <div id="ending1" class="ending-line">
+      Hết thư rồi...
+    </div>
+
+    <div id="ending2" class="ending-line">
+      nhưng chuyện của tụi mình thì chưa đâu ❤️
+    </div>
+
+    <div id="ending3" class="ending-line">
+      Happy Birthday, bì iu. 🎂
+    </div>
+
+    <div id="ending4" class="ending-line">
+      Em thương chị. ❤️
+    </div>
+
+    <div id="finalHeart" class="final-heart">
+      ❤️
+    </div>
+
+  </div>
+</section>
+
+<script>
+
+const PASSWORD = "0305";
+
+const voice = document.getElementById("voice");
+const music = document.getElementById("music");
+
+const startBtn = document.getElementById("startBtn");
+const introStatus = document.getElementById("introStatus");
+
+let started = false;
+let revealed = false;
+let loopingMusic = false;
+
+
+function showScreen(id){
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(screen=>{
+      screen.classList.remove("active");
+    });
+
+  document
+    .getElementById(id)
+    .classList.add("active");
+
+  window.scrollTo(0,0);
+}
+
+
+/* BẮT ĐẦU */
+
+async function startSurprise(){
+
+  if(started) return;
+
+  started = true;
+
+  startBtn.disabled = true;
+  startBtn.textContent = "🎙️ Đang phát...";
+  introStatus.textContent = "Nghe hết nha bì ❤️";
+
+  createHearts(18);
+
+  try{
+
+    /*
+    CHO NHẠC CHẠY NGẦM NHƯNG MUTED
+    ĐỂ IPHONE KHÔNG CHẶN SAU ĐÓ
+    */
+
+    music.currentTime = 0;
+    music.volume = 0;
+    music.muted = true;
+
+    await music.play();
+
+
+    /*
+    CHỈ NGHE VOICE
+    */
+
+    voice.currentTime = 0;
+
+    await voice.play();
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    introStatus.textContent =
+      "Có lỗi khi phát âm thanh 🥺";
+
+    startBtn.disabled = false;
+
+    startBtn.textContent =
+      "Bấm vô cái này i bì 💗";
+
+    started = false;
+  }
+}
+
+
+/*
+VOICE HẾT
+THÌ NHẠC MỚI CÓ TIẾNG
+*/
+
+voice.addEventListener("ended",()=>{
+
+  showScreen("loadingScreen");
+
+  createHearts(22);
+
+  music.currentTime = 0;
+
+  music.volume = 0;
+  music.muted = false;
+
+  fadeInMusic(
+    1800,
+    0.75
+  );
+
+
+  /*
+  ĐANG MỞ MÓN QUÀ = 10 GIÂY
+  */
+
+  setTimeout(()=>{
+
+    showScreen(
+      "passwordScreen"
+    );
+
+  },10000);
+
+});
+
+
+/* NHẠC FADE IN */
+
+function fadeInMusic(
+  duration,
+  targetVolume
+){
+
+  const steps = 30;
+  let step = 0;
+
+  const timer =
+    setInterval(()=>{
+
+      step++;
+
+      music.volume =
+        Math.min(
+          targetVolume,
+          (step/steps)
+          *targetVolume
+        );
+
+      if(step>=steps){
+        clearInterval(timer);
+      }
+
+    },
+    duration/steps
+  );
+}
+
+
+/*
+LOOP NHẠC MƯỢT HƠN
+
+3 GIÂY CUỐI:
+NHỎ DẦN
+
+SAU ĐÓ:
+VỀ ĐẦU + TO DẦN
+*/
+
 music.addEventListener("timeupdate",()=>{
 
   if(
@@ -11,6 +558,7 @@ music.addEventListener("timeupdate",()=>{
 
     const fadeSteps = 30;
     const startVolume = music.volume;
+
     let step = 0;
 
     const fadeOut = setInterval(()=>{
@@ -19,7 +567,7 @@ music.addEventListener("timeupdate",()=>{
 
       music.volume = Math.max(
         0,
-        startVolume * (1 - step / fadeSteps)
+        startVolume * (1 - step/fadeSteps)
       );
 
       if(step >= fadeSteps){
@@ -37,7 +585,7 @@ music.addEventListener("timeupdate",()=>{
 
           music.volume = Math.min(
             0.75,
-            0.75 * (fadeStep / fadeSteps)
+            0.75 * (fadeStep/fadeSteps)
           );
 
           if(fadeStep >= fadeSteps){
@@ -47,9 +595,225 @@ music.addEventListener("timeupdate",()=>{
             loopingMusic = false;
           }
 
-        }, 70);
+        },70);
       }
 
-    }, 70);
+    },70);
   }
 });
+
+
+/* MỞ THƯ */
+
+function openLetter(){
+
+  const password =
+    document
+      .getElementById(
+        "passwordInput"
+      )
+      .value
+      .trim();
+
+  const error =
+    document
+      .getElementById(
+        "errorMessage"
+      );
+
+  if(password !== PASSWORD){
+
+    error.textContent =
+      "Hmmm... Bì nhập sai rồi nè 🥺❤️";
+
+    return;
+  }
+
+  error.textContent = "";
+
+  showScreen(
+    "letterScreen"
+  );
+
+  createHearts(45);
+
+  if(!revealed){
+
+    revealed = true;
+
+    revealLetter();
+  }
+}
+
+
+/* HIỆN THƯ */
+
+function revealLetter(){
+
+  const paragraphs = [
+    ...document.querySelectorAll(
+      "#letter p"
+    )
+  ];
+
+  const signature =
+    document.getElementById(
+      "signature"
+    );
+
+  const finalButton =
+    document.getElementById(
+      "finalButtonWrap"
+    );
+
+  paragraphs.forEach(
+    (paragraph,index)=>{
+
+      setTimeout(()=>{
+
+        paragraph
+          .classList
+          .add("show");
+
+      },index*1050);
+
+    }
+  );
+
+  setTimeout(()=>{
+
+    signature
+      .classList
+      .add("show");
+
+  },
+  paragraphs.length*1050+500
+  );
+
+  setTimeout(()=>{
+
+    finalButton
+      .classList
+      .add("show");
+
+  },
+  paragraphs.length*1050+2500
+  );
+}
+
+
+/* ENDING */
+
+function openEnding(){
+
+  showScreen(
+    "endingScreen"
+  );
+
+  createHearts(22);
+
+  const line1 =
+    document.getElementById("ending1");
+
+  const line2 =
+    document.getElementById("ending2");
+
+  const line3 =
+    document.getElementById("ending3");
+
+  const line4 =
+    document.getElementById("ending4");
+
+  const heart =
+    document.getElementById("finalHeart");
+
+
+  setTimeout(()=>{
+    line1.classList.add("show");
+  },800);
+
+
+  setTimeout(()=>{
+    line2.classList.add("show");
+  },3800);
+
+
+  setTimeout(()=>{
+    line3.classList.add("show");
+  },7800);
+
+
+  setTimeout(()=>{
+    line4.classList.add("show");
+  },11300);
+
+
+  setTimeout(()=>{
+    heart.classList.add("show");
+  },14300);
+}
+
+
+/* TIM RƠI */
+
+function createHearts(count){
+
+  for(
+    let i=0;
+    i<count;
+    i++
+  ){
+
+    setTimeout(()=>{
+
+      const heart =
+        document.createElement("div");
+
+      heart.className = "heart";
+
+      heart.textContent =
+        Math.random()>.5
+          ?"❤️"
+          :"💗";
+
+      heart.style.left =
+        Math.random()*100+"vw";
+
+      heart.style.fontSize =
+        14+Math.random()*22+"px";
+
+      heart.style.animationDuration =
+        4+Math.random()*5+"s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(()=>{
+        heart.remove();
+      },9000);
+
+    },i*120);
+  }
+}
+
+
+/* ENTER MỞ THƯ */
+
+document
+  .getElementById(
+    "passwordInput"
+  )
+  .addEventListener(
+    "keydown",
+    event=>{
+
+      if(event.key==="Enter"){
+        openLetter();
+      }
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
